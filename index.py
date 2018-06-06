@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request 
-import sqlite3 as sql 
-app = Flask(__name__)
-
 import sqlite3
+app = Flask(__name__)
 
 conn = sqlite3.connect('Quiz0Db.db')
 
@@ -19,14 +17,14 @@ conn.close()
 
 @app.route('/')
 def home():
-   return render_template('home.html')
+    return render_template('home.html')
 
  
 @app.route('/vehicleName', methods=['POST'])
 def vehicleName():
     vehicleName= request.form['vehicleName'] 
-    con = sql.connect("Quiz0Db.db") 
-    con.row_factory = sql.Row
+    con = sqlite3.connect("Quiz0Db.db")
+    con.row_factory = sqlite3.Row
     cur = con.cursor()
     # print(vehicleName)
     cur.execute('SELECT * FROM vehicle where Vname like \'%'+vehicleName+'%\';') 
@@ -37,8 +35,8 @@ def vehicleName():
 @app.route('/deleteVehicle', methods=['POST'])
 def deleteVehicle():
     deleteVehicle= request.form['deleteVehicle'] 
-    con = sql.connect("Quiz0Db.db") 
-    con.row_factory = sql.Row
+    con = sqlite3.connect("Quiz0Db.db")
+    con.row_factory = sqlite3.Row
     cur = con.cursor()
     # print(vehicleName)
     # cur.execute('DELETE FROM vehicle where Vname like \'%'+deleteVehicle+'%\';')
@@ -52,15 +50,15 @@ def deleteVehicle():
 @app.route('/editVehicle', methods=['POST'])
 def editVehicle():
     editVehicle= request.form['editVehicle'] 
-    con = sql.connect("Quiz0Db.db") 
-    con.row_factory = sql.Row
+    con = sqlite3.connect("Quiz0Db.db")
+    con.row_factory = sqlite3.Row
     cur = con.cursor()
     # print(vehicleName)
     # cur.execute('DELETE FROM vehicle where Vname like \'%'+deleteVehicle+'%\';')
     cur.execute('UPDATE vehicle set Vname = ? where Rnum=?',("honda",editVehicle,))
     con.commit()
 
-    msg="Record successfully deleted" 
+    msg = "Record successfully deleted"
      # return vehicleName
     return render_template('list.html',msg=msg)
 
@@ -70,7 +68,7 @@ def editVehicle():
 
 
 if __name__ == '__main__': 
- app.run(debug = True)
+    app.run(debug = True)
 
     # con = sql.connect("Quiz0Db.db")               
     # con.row_factory = sql.rows                
